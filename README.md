@@ -93,7 +93,7 @@ ls | grep ".c"
 or:
 
 ```bash
-cat file.txt | grep hello | wc -l
+cat file.txt | grep hello
 ```
 
 ### ⚙️ Signal Handling
@@ -217,9 +217,13 @@ FlameOShell uses several Unix/Linux system calls and concepts, including:
 
 A web/demo version of FlameOShell will be added here.
 
-```text
-Coming soon 🔥
-```
+## 🌐 Web Version
+
+Try the interactive browser-based demo of FlameOShell:
+
+👉 **[Launch FlameOShell](https://flameoshell.vercel.app/)**
+
+The web version provides a browser-side simulation of the shell, including a virtual filesystem, command execution, pipes, redirection, background jobs, and job control.
 
 Screenshots and GIFs can also be added here later:
 
@@ -272,11 +276,11 @@ The native C shell will remain the core project, while the website will provide 
 
 ### 🌐 Web Version
 
-- [ ] Landing page
-- [ ] Interactive terminal
+- [x] Landing page
+- [x] Interactive terminal
+- [x] Deploy to Vercel
 - [ ] Command documentation
 - [ ] Demo section
-- [ ] Deploy to Vercel
 
 ---
 
