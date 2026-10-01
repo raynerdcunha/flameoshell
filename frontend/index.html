@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="FlameOShell — a lightweight Unix-like shell built in C."
+    >
+
+    <title>FlameOShell — Unix-like Shell in C</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+    <div class="grid-background"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="brand">
+            <span class="brand-fire">🔥</span>
+            <span>FlameOShell</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#terminal">Terminal</a>
+            <a href="#architecture">How it works</a>
+
+            <a
+                href="https://github.com/raynerdcunha/flameoshell"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="github-link"
+            >
+                GitHub ↗
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    Built in C · Unix-like shell
+                </div>
+
+                <h1>
+                    Small shell.
+                    <span>Big energy.</span>
+                </h1>
+
+                <p class="hero-description">
+                    FlameOShell is a lightweight Unix-like shell built in C,
+                    featuring process management, pipes, redirection,
+                    background jobs, job control, and signal handling.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="#terminal"
+                        class="button button-primary"
+                    >
+                        <span>Try the terminal</span>
+                        <span>→</span>
+                    </a>
+
+                    <a
+                        href="https://github.com/raynerdcunha/flameoshell"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="button button-secondary"
+                    >
+                        View on GitHub
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Hero Terminal -->
+            <div class="hero-terminal">
+
+                <div class="terminal-window">
+
+                    <div class="terminal-topbar">
+
+                        <div class="terminal-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+
+                        <div class="terminal-title">
+                            flameoshell
+                        </div>
+
+                        <div class="terminal-status">
+                            ●
+                        </div>
+
+                    </div>
+
+
+                    <div class="terminal-body">
+
+                        <div class="terminal-line">
+                            <span class="prompt">flame@oshell</span>
+                            <span class="path">:~$</span>
+                            <span class="command"> ./flameoshell</span>
+                        </div>
+
+                        <div class="terminal-output">
+                            🔥 FlameOShell started
+                        </div>
+
+                        <div class="terminal-line">
+                            <span class="prompt">flame@oshell</span>
+                            <span class="path">:~$</span>
+                            <span class="command"> ls</span>
+                        </div>
+
+                        <div class="terminal-output">
+                            flameoshell.c&nbsp;&nbsp; Makefile&nbsp;&nbsp; README.md
+                        </div>
+
+                        <div class="terminal-line">
+                            <span class="prompt">flame@oshell</span>
+                            <span class="path">:~$</span>
+                            <span class="command"> echo "hello"</span>
+                        </div>
+
+                        <div class="terminal-output">
+                            hello
+                        </div>
+
+                        <div class="terminal-line typing-line">
+                            <span class="prompt">flame@oshell</span>
+                            <span class="path">:~$</span>
+                            <span class="cursor"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Stats -->
+        <section class="stats">
+
+            <div class="stat">
+                <span class="stat-number">C</span>
+                <span class="stat-label">Core language</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-number">Unix</span>
+                <span class="stat-label">Shell architecture</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-number">POSIX</span>
+                <span class="stat-label">System concepts</span>
+            </div>
+
+            <div class="stat">
+                <span class="stat-number">🔥</span>
+                <span class="stat-label">Flame powered</span>
+            </div>
+
+        </section>
+
+
+        <!-- Features -->
+        <section class="section" id="features">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    <span>01</span>
+                    CAPABILITIES
+                </div>
+
+                <h2>
+                    Everything you expect
+                    <span>from a shell.</span>
+                </h2>
+
+                <p>
+                    FlameOShell brings together the fundamental Unix process
+                    and shell concepts into one lightweight program.
+                </p>
+
+            </div>
+
+
+            <div class="feature-grid">
+
+                <article class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Command execution</h3>
+                    <p>
+                        Parse commands and launch programs using the
+                        operating system's process model.
+                    </p>
+                    <span class="code-tag">fork() + execve()</span>
+                </article>
+
+
+                <article class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Pipes</h3>
+                    <p>
+                        Connect processes together and move output from one
+                        command directly into another.
+                    </p>
+                    <span class="code-tag">pipe()</span>
+                </article>
+
+
+                <article class="feature-card">
+                    <div class="feature-icon">📂</div>
+                    <h3>Redirection</h3>
+                    <p>
+                        Redirect standard input and output using files,
+                        just like a traditional Unix shell.
+                    </p>
+                    <span class="code-tag">open() + dup2()</span>
+                </article>
+
+
+                <article class="feature-card">
+                    <div class="feature-icon">🧵</div>
+                    <h3>Background jobs</h3>
+                    <p>
+                        Run processes in the background while keeping the
+                        shell available for more commands.
+                    </p>
+                    <span class="code-tag">&amp; + jobs</span>
+                </article>
+
+
+                <article class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Job control</h3>
+                    <p>
+                        Move processes between foreground and background
+                        execution with shell-level job management.
+                    </p>
+                    <span class="code-tag">fg + bg</span>
+                </article>
+
+
+                <article class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Signal handling</h3>
+                    <p>
+                        Handle process signals and terminal events while
+                        maintaining control of running jobs.
+                    </p>
+                    <span class="code-tag">sigaction()</span>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- Interactive Terminal -->
+        <section class="section terminal-section" id="terminal">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    <span>02</span>
+                    INTERACTIVE DEMO
+                </div>
+
+                <h2>
+                    Get your hands
+                    <span>dirty.</span>
+                </h2>
+
+                <p>
+                    This browser terminal is a demo of the FlameOShell
+                    experience. Type a command below and see what happens.
+                </p>
+
+            </div>
+
+
+            <div class="interactive-terminal">
+
+                <div class="interactive-topbar">
+
+                    <div class="terminal-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <span class="interactive-title">
+                        flameoshell — demo
+                    </span>
+
+                    <span class="live-badge">
+                        DEMO
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="terminal-output-area"
+                    id="terminalOutput"
+                >
+                    <div class="demo-line">
+                        <span class="orange">🔥 FlameOShell</span>
+                        <span>web demo</span>
+                    </div>
+
+                    <div class="demo-line muted">
+                        Type <span class="orange">help</span> to see
+                        available commands.
+                    </div>
+
+                    <br>
+                </div>
+
+
+                <form
+                    class="terminal-input-row"
+                    id="terminalForm"
+                >
+
+                    <span class="terminal-prompt" id="terminalPrompt">
+                        flame@flameoshell:~$
+                    </span>
+
+                    <input
+                        type="text"
+                        id="terminalInput"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Terminal command"
+                        autofocus
+                    >
+
+                </form>
+
+            </div>
+
+
+            <div class="command-hints">
+
+                <button data-command="help">help</button>
+                <button data-command="ls">ls</button>
+                <button data-command="pwd">pwd</button>
+                <button data-command="whoami">whoami</button>
+                <button data-command="about">about</button>
+                <button data-command="clear">clear</button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Architecture -->
+        <section class="section architecture-section" id="architecture">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    <span>03</span>
+                    UNDER THE HOOD
+                </div>
+
+                <h2>
+                    From command
+                    <span>to process.</span>
+                </h2>
+
+                <p>
+                    A shell looks simple from the outside. Underneath,
+                    it is coordinating processes, file descriptors,
+                    signals, and the operating system.
+                </p>
+
+            </div>
+
+
+            <div class="architecture">
+
+                <div class="architecture-step">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <div class="step-icon">
+                        ⌨️
+                    </div>
+
+                    <h3>Input</h3>
+
+                    <p>
+                        The shell receives a command from the user.
+                    </p>
+
+                </div>
+
+
+                <div class="architecture-arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <div class="step-icon">
+                        🧩
+                    </div>
+
+                    <h3>Parse</h3>
+
+                    <p>
+                        Arguments, pipes, redirection and job modifiers
+                        are interpreted.
+                    </p>
+
+                </div>
+
+
+                <div class="architecture-arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <div class="step-icon">
+                        ⚙️
+                    </div>
+
+                    <h3>Process</h3>
+
+                    <p>
+                        Processes are created and connected using
+                        system calls.
+                    </p>
+
+                </div>
+
+
+                <div class="architecture-arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    <div class="step-icon">
+                        🔥
+                    </div>
+
+                    <h3>Execute</h3>
+
+                    <p>
+                        The operating system runs the requested command.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="syscalls">
+
+                <span>fork()</span>
+                <span>execve()</span>
+                <span>waitpid()</span>
+                <span>pipe()</span>
+                <span>open()</span>
+                <span>dup2()</span>
+                <span>kill()</span>
+                <span>sigaction()</span>
+                <span>setpgid()</span>
+
+            </div>
+
+        </section>
+
+
+        <!-- CTA -->
+        <section class="cta-section">
+
+            <div class="cta-glow"></div>
+
+            <div class="cta-content">
+
+                <div class="cta-fire">
+                    🔥
+                </div>
+
+                <h2>
+                    Want to run the
+                    <span>real thing?</span>
+                </h2>
+
+                <p>
+                    Clone the repository, build it locally, and launch
+                    FlameOShell from your own terminal.
+                </p>
+
+                <div class="install-command">
+                    <span>$</span>
+                    <code>git clone https://github.com/raynerdcunha/flameoshell.git</code>
+                    <button
+                        id="copyCommand"
+                        aria-label="Copy command"
+                    >
+                        Copy
+                    </button>
+                </div>
+
+                <a
+                    href="https://github.com/raynerdcunha/flameoshell"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="button button-primary cta-button"
+                >
+                    Explore the repository ↗
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-brand">
+            🔥 <span>FlameOShell</span>
+        </div>
+
+        <div class="footer-text">
+            A lightweight Unix-like shell built in C.
+        </div>
+
+        <div class="footer-links">
+
+            <a
+                href="https://github.com/raynerdcunha/flameoshell"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub
+            </a>
+
+            <span>·</span>
+
+            <span>Apache 2.0</span>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
