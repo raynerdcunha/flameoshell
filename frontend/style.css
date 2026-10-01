@@ -521,6 +521,10 @@ button {
     flex-wrap: wrap;
 }
 
+.typing-line {
+    align-items: center;
+}
+
 .prompt {
     color: var(--orange);
     white-space: pre;

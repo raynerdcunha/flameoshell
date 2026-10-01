@@ -324,43 +324,6 @@ function clearTerminal() {
  * - operators are recognized only when standalone
  */
 
-function tokenize(line) {
-    const tokens = [];
-
-    let current = "";
-    let inDoubleQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-
-        if (char === '"') {
-            inDoubleQuotes = !inDoubleQuotes;
-            continue;
-        }
-
-        if (
-            (char === " " || char === "\t" || char === "\n") &&
-            !inDoubleQuotes
-        ) {
-            if (current.length > 0) {
-                tokens.push(current);
-                current = "";
-            }
-
-            continue;
-        }
-
-        current += char;
-    }
-
-    if (current.length > 0) {
-        tokens.push(current);
-    }
-
-    return tokens;
-}
-
-
 /*
  * Native shell only supports double-quoted spaces.
  * Preserve whether an operator appeared inside quotes.
@@ -1236,7 +1199,7 @@ async function builtinExit() {
 
     return {
         code: 0,
-        output: "FlameOShell session ended."
+        output: "FlameOShell session ended. Refresh the page to start a new session."
     };
 }
 
@@ -1883,29 +1846,13 @@ async function executeBackground(commandLine) {
         };
     }
 
+    /*
+     * Builtins/web commands never reach here: executeCommandLine
+     * dispatches a builtin by its first token before background
+     * detection ever runs, exactly matching the native shell's
+     * dispatch order (see executeCommandLine).
+     */
     const name = commandTokens[0];
-
-    if (
-        isBuiltin(name) ||
-        isWebCommand(name)
-    ) {
-        return {
-            code: 1,
-            output:
-                `flameoshell: ${name}: cannot run this command in background`
-        };
-    }
-
-    if (
-        redirection.inputFile ||
-        redirection.outputFile
-    ) {
-        /*
-         * Native FlameOShell supports redirection with
-         * background external commands.
-         */
-    }
-
     const args = commandTokens.slice(1);
 
     const process = createProcess(
@@ -1914,18 +1861,14 @@ async function executeBackground(commandLine) {
 
     process.background = true;
 
-    const added = addJob(process);
-
-    if (!added) {
-        /*
-         * The native shell can exceed the table after fork;
-         * for the web demo we keep the process tracked safely.
-         */
-        return {
-            code: 1,
-            output: "flameoshell: job table full"
-        };
-    }
+    /*
+     * The native shell still fork()s and runs a 65th+ background
+     * job -- it only fails to insert it into the fixed-size job
+     * table, so it keeps running untracked (no jobs/fg/bg entry,
+     * no "Done" message). Mirror that instead of refusing to run
+     * the command at all.
+     */
+    const tracked = addJob(process);
 
     let stdin = "";
 
@@ -1935,7 +1878,9 @@ async function executeBackground(commandLine) {
         );
 
         if (!file.ok) {
-            removeJob(process);
+            if (tracked) {
+                removeJob(process);
+            }
 
             return {
                 code: 1,
@@ -1962,6 +1907,19 @@ async function executeBackground(commandLine) {
      */
     promise.then(result => {
         if (process.status === "T") {
+            return;
+        }
+
+        if (!tracked) {
+            /*
+             * Untracked (job table was full): just mark it done
+             * quietly, like the native shell's untracked process.
+             */
+            if (process.status !== "D") {
+                process.status = "D";
+                process.completionResult = result;
+            }
+
             return;
         }
 
@@ -1995,11 +1953,34 @@ async function executeCommandLine(line) {
         };
     }
 
+    const tokens = tokenizeWithQuoteAwareness(trimmed);
+
+    if (tokens.length === 0) {
+        return {
+            code: 0,
+            output: ""
+        };
+    }
+
+    /*
+     * Native shell matches a builtin against the first token
+     * of the whole raw line before it ever looks for '&' or
+     * '|'. A builtin takes a fixed set of arguments and simply
+     * never reads anything past them, so trailing "&" or "| cmd"
+     * text is silently ignored rather than treated as an
+     * operator. Matching that order here (instead of checking
+     * for background/pipeline first) is what makes "jobs | cat"
+     * just run jobs() and "cd /tmp &" just cd normally, exactly
+     * like the native shell -- rather than this demo being
+     * accidentally more capable than the real one.
+     */
+    if (isBuiltin(tokens[0]) || isWebCommand(tokens[0])) {
+        return executeSingle(trimmed);
+    }
+
     /*
      * Background command.
      */
-    const tokens = tokenizeWithQuoteAwareness(trimmed);
-
     if (detectBackground(tokens)) {
         return executeBackground(trimmed);
     }

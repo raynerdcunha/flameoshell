@@ -8,6 +8,16 @@ It supports process management, pipes, redirection, background jobs, job control
 
 ---
 
+## 🎬 Demo
+
+![FlameOShell demo](demo.gif)
+
+A quick look at FlameOShell handling command execution, pipes, redirection, and job control (`Ctrl+Z`, `bg`, `fg`) in a real terminal.
+
+> Drop a `demo.gif` (or `demo.mp4`) in the repo root to make this preview go live. A good one: run `./flameoshell`, `ls | grep .c`, `sleep 30 &`, `jobs`, `fg`, `Ctrl+Z`, `bg`, then `exit`.
+
+---
+
 ## 🖥️ What is FlameOShell?
 
 FlameOShell lets you interact with your system through a custom shell instead of using a standard shell like `bash`.
