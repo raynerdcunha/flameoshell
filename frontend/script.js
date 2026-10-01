@@ -324,43 +324,6 @@ function clearTerminal() {
  * - operators are recognized only when standalone
  */
 
-function tokenize(line) {
-    const tokens = [];
-
-    let current = "";
-    let inDoubleQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-
-        if (char === '"') {
-            inDoubleQuotes = !inDoubleQuotes;
-            continue;
-        }
-
-        if (
-            (char === " " || char === "\t" || char === "\n") &&
-            !inDoubleQuotes
-        ) {
-            if (current.length > 0) {
-                tokens.push(current);
-                current = "";
-            }
-
-            continue;
-        }
-
-        current += char;
-    }
-
-    if (current.length > 0) {
-        tokens.push(current);
-    }
-
-    return tokens;
-}
-
-
 /*
  * Native shell only supports double-quoted spaces.
  * Preserve whether an operator appeared inside quotes.
@@ -1261,7 +1224,7 @@ async function builtinExit() {
 
     return {
         code: 0,
-        output: "FlameOShell session ended."
+        output: "FlameOShell session ended. Refresh the page to start a new session."
     };
 }
 
@@ -1911,17 +1874,6 @@ async function executeBackground(commandLine) {
     const name = commandTokens[0];
 
     if (
-        isBuiltin(name) ||
-        isWebCommand(name)
-    ) {
-        return {
-            code: 1,
-            output:
-                `flameoshell: ${name}: cannot run this command in background`
-        };
-    }
-
-    if (
         redirection.inputFile ||
         redirection.outputFile
     ) {
@@ -1939,18 +1891,18 @@ async function executeBackground(commandLine) {
 
     process.background = true;
 
-    const added = addJob(process);
-
-    if (!added) {
-        /*
-         * The native shell can exceed the table after fork;
-         * for the web demo we keep the process tracked safely.
-         */
-        return {
-            code: 1,
-            output: "flameoshell: job table full"
-        };
-    }
+    /*
+     * Native FlameOShell still forks and runs the process even
+     * once its fixed-size job table is full -- it just has no
+     * slot left to track it in, so fg/bg/jobs can't see it. Match
+     * that here: fall through and run the process either way,
+     * only skipping the jobs-table bookkeeping when it's full
+     * instead of refusing to run the command at all. completeProcess()
+     * already only prints the "[n] Done" line and cleans up the jobs
+     * array when the process is actually in it, so an untracked
+     * process finishes silently, exactly like native.
+     */
+    addJob(process);
 
     let stdin = "";
 
@@ -2020,11 +1972,27 @@ async function executeCommandLine(line) {
         };
     }
 
+    const tokens = tokenizeWithQuoteAwareness(trimmed);
+
+    /*
+     * Native shell matches a builtin against the first token
+     * of the whole raw line before it ever looks for '&' or
+     * '|'. A builtin takes a fixed set of arguments and simply
+     * never reads anything past them, so trailing "&" or "| cmd"
+     * text is silently ignored rather than treated as an
+     * operator. Matching that order here (instead of checking
+     * for background/pipeline first) is what makes "jobs | cat"
+     * just run jobs() and "cd /tmp &" just cd normally, exactly
+     * like the native shell -- rather than this demo being
+     * accidentally more capable than the real one.
+     */
+    if (isBuiltin(tokens[0]) || isWebCommand(tokens[0])) {
+        return executeSingle(trimmed);
+    }
+
     /*
      * Background command.
      */
-    const tokens = tokenizeWithQuoteAwareness(trimmed);
-
     if (detectBackground(tokens)) {
         return executeBackground(trimmed);
     }
@@ -2388,11 +2356,20 @@ terminalForm.addEventListener("submit", async event => {
 
     /*
      * Determine whether this is a background command.
+     * This mirrors the same precedence executeCommandLine()
+     * uses internally: a builtin/web command is matched
+     * against the first token before '&' is ever considered,
+     * so "cd /tmp &" or "exit &" run (and print) normally
+     * instead of being routed down the background branch
+     * below, which never prints a result at all (it assumes
+     * a real background job already announced itself via
+     * "PID n is sent to background").
      */
     const tokens =
         tokenizeWithQuoteAwareness(command.trim());
 
     const isBackground =
+        !(isBuiltin(tokens[0]) || isWebCommand(tokens[0])) &&
         detectBackground(tokens);
 
     /*
@@ -2424,13 +2401,16 @@ terminalForm.addEventListener("submit", async event => {
         await executeCommandLine(command);
 
     /*
-     * A foreground process may have been interrupted
-     * or stopped while executeCommandLine was waiting.
+     * Print the result, if there is one. Note this does NOT
+     * gate on sessionActive: "exit" itself sets sessionActive
+     * to false as the first thing it does, so gating on it
+     * here meant exit's own "session ended" confirmation never
+     * printed -- the only command whose result that check could
+     * ever suppress was exit's.
      */
     if (
         result &&
-        result.output &&
-        sessionActive
+        result.output
     ) {
         print(result.output);
     }
