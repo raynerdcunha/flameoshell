@@ -213,74 +213,23 @@ FlameOShell uses several Unix/Linux system calls and concepts, including:
 
 ---
 
-## 🎬 Demo
-
-A web/demo version of FlameOShell will be added here.
-
 ## 🌐 Web Version
 
 Try the interactive browser-based demo of FlameOShell:
 
 👉 **[Launch FlameOShell](https://flameoshell.vercel.app/)**
 
-The web version provides a browser-side simulation of the shell, including a virtual filesystem, command execution, pipes, redirection, background jobs, and job control.
-
-Screenshots and GIFs can also be added here later:
-
-```markdown
-![FlameOShell Demo](images/demo.gif)
-```
-
----
-
-## 🌐 Web Version
-
-A web version of FlameOShell is planned for:
-
-**https://flameoshell.vercel.app**
-
-The goal is to eventually provide a browser-based experience with:
+The web version provides a browser-side simulation of FlameOShell with:
 
 - 🖥️ Interactive terminal
-- 📖 Command documentation
-- 🎨 FlameOShell interface
-- 🧪 Interactive examples
-- 📱 Responsive design
+- 📁 Virtual filesystem
+- 🔗 Pipes
+- 📥 Input redirection
+- 📤 Output redirection
+- 🚀 Background jobs
+- 🎮 Job control
 
-The native C shell will remain the core project, while the website will provide a way to explore and interact with it online.
-
----
-
-## 🗺️ Roadmap
-
-### 🔥 Core Shell
-
-- [x] Command execution
-- [x] Built-in commands
-- [x] Background processes
-- [x] Job control
-- [x] Input redirection
-- [x] Output redirection
-- [x] Pipes
-- [x] Signal handling
-
-### 🚀 Future Ideas
-
-- [ ] Command history
-- [ ] Tab completion
-- [ ] Environment variable support
-- [ ] Improved command parsing
-- [ ] Better error messages
-- [ ] More built-in commands
-- [ ] Improved terminal UI
-
-### 🌐 Web Version
-
-- [x] Landing page
-- [x] Interactive terminal
-- [x] Deploy to Vercel
-- [ ] Command documentation
-- [ ] Demo section
+> The web demo simulates the native shell experience in the browser. The native implementation remains the actual C shell.
 
 ---
 
