@@ -225,7 +225,7 @@ FlameOShell uses several Unix/Linux system calls and concepts, including:
 
 Try the interactive browser-based demo of FlameOShell:
 
-👉 **[Launch FlameOShell](https://flameoshell.vercel.app/)**
+👉 **[Launch FlameOShell](https://flameoshell.raynerdcunha.com/)**
 
 The web version provides a browser-side simulation of FlameOShell with:
 
